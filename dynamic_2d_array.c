@@ -1,28 +1,32 @@
+#include<stdio.h>
+#include<stdlib.h>
 int alloc_2d_arr(int ***pArr,int row,int col){
 	*pArr=malloc(row * sizeof(int *));
 		if(*pArr==NULL){
-		    return -1;
+		    return -1;//内存申请失败
 	}
 	else{
 		for(int i=0;i<row;i++){
 		(*pArr)[i]=malloc(col * sizeof(int));
 		if((*pArr)[i]==NULL){
-			for(int j=i;j>=0;j--){
+			for(int j=i-1;j>=0;j--){
 				free((*pArr)[j]);
 			}
 			free(*pArr);
 			return -1;
 		}
 	    }
-		return 0;
+		return 0;//内存申请成功
 	}
 }
 void safe_free_2d_arr(int ***pArr,int row){
-	for(int i=0;i<row;i++){
+	if(*pArr!=NULL){
+		for(int i=0;i<row;i++){
 		free((*pArr)[i]);
 	}
 	free(*pArr);
 	*pArr=NULL;
+	}
 }
 int main(void){
 	int **p;
